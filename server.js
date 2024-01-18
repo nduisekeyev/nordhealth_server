@@ -2,12 +2,9 @@
 
 const express = require("express");
 const cors = require("cors");
-const serverless = require("serverless-http");
 const app = express();
 const bodyParser = require("body-parser");
 const atob = require("atob");
-
-const router = express.Router();
 
 app.use(cors()); // Use CORS middleware to handle cross-origin requests
 app.use(bodyParser.json()); // Parse JSON requests
@@ -37,7 +34,7 @@ const users = [
   },
 ];
 
-router.post("/api/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
   console.log("_req", req.body);
@@ -66,7 +63,7 @@ router.post("/api/login", (req, res) => {
   res.status(200).json(userWithoutPassword);
 });
 
-router.post("/api/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {
   // Check if the request has an Authorization header
   const authorizationHeader = req.headers["authorization"];
 
@@ -79,11 +76,6 @@ router.post("/api/logout", (req, res) => {
   }
 });
 
-app.use("/.netlify/functions/api", router);
-
-// app.listen(8000, () => {
-//   console.log("Listening on localhost:8000");
-// });
-
-module.exports = app;
-module.exports.handler = serverless(app);
+app.listen(8000, () => {
+  console.log("Listening on localhost:8000");
+});
