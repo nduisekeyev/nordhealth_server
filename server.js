@@ -2,9 +2,12 @@
 
 const express = require("express");
 const cors = require("cors");
+const serverless = require("serverless-http");
 const app = express();
 const bodyParser = require("body-parser");
 const atob = require("atob");
+
+const router = express.Router();
 
 app.use(cors()); // Use CORS middleware to handle cross-origin requests
 app.use(bodyParser.json()); // Parse JSON requests
@@ -34,7 +37,7 @@ const users = [
   },
 ];
 
-app.post("/api/login", (req, res) => {
+router.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
   console.log("_req", req.body);
@@ -63,7 +66,7 @@ app.post("/api/login", (req, res) => {
   res.status(200).json(userWithoutPassword);
 });
 
-app.post("/api/logout", (req, res) => {
+router.post("/api/logout", (req, res) => {
   // Check if the request has an Authorization header
   const authorizationHeader = req.headers["authorization"];
 
@@ -76,6 +79,10 @@ app.post("/api/logout", (req, res) => {
   }
 });
 
+app.use("/", router);
+
 app.listen(8000, () => {
   console.log("Listening on localhost:8000");
 });
+
+module.exports.handler = serverless(app);
