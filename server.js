@@ -79,10 +79,11 @@ router.post("/api/logout", (req, res) => {
   }
 });
 
-app.use("/", router);
+app.use("/.netlify/functions/api", router);
 
-app.listen(8000, () => {
-  console.log("Listening on localhost:8000");
-});
+// app.listen(8000, () => {
+//   console.log("Listening on localhost:8000");
+// });
 
+module.exports = app;
 module.exports.handler = serverless(app);

@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "build": "netlify-lambda build functions",
+    "start": "netlify-lamba serve src",
+    "build": "netlify-lamba build src",
     "dev": "nodemon server.js"
   },
   "author": "Nur Duisekeyev",
