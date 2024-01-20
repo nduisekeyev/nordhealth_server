@@ -20,6 +20,7 @@ const users = [
     accessToken:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik5vcmQgVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.YD5e-xPmpFWfdxg9bnMom3y2dwko0fqvbdtzFNQaXyA",
     is_active: true,
+    is_updates_on: false,
   },
   {
     id: 2,
@@ -31,13 +32,14 @@ const users = [
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik5vcmQgQWRtaW4iLCJpYXQiOjE1MTYyMzkwMjJ9.yswrw6XMf9qiWjnZT3A6YnJIF0vWQdBULI9NME3a1fM",
     role: "admin",
     is_active: true,
+    is_updates_on: false,
   },
 ];
 
 app.post("/api/login", (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, updates } = req.body;
 
-  console.log("_req", req.body);
+  console.log("Login Request:", req.body);
 
   // Check if email and password are provided
   if (!email || !password) {
@@ -58,6 +60,9 @@ app.post("/api/login", (req, res) => {
   // If email and password match, create a user object without the password field
   const userWithoutPassword = { ...user };
   delete userWithoutPassword.password;
+
+  // Include the is_updates_on property based on the updates value
+  if (updates) userWithoutPassword.is_updates_on = updates;
 
   // If email and password match, send user details
   res.status(200).json(userWithoutPassword);
